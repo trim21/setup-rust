@@ -4,7 +4,7 @@ import * as io from "@actions/io";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { load as tomlLoad } from "js-toml";
+import { parse as tomlParse } from "smol-toml";
 
 export const CARGO_HOME = process.env.CARGO_HOME || path.join(os.homedir(), ".cargo");
 export const RUSTUP_HOME = process.env.RUSTUP_HOME || path.join(os.homedir(), ".rustup");
@@ -56,7 +56,7 @@ export async function resolveToolchain(
     );
   }
 
-  const parsed = tomlLoad(content) as { toolchain?: { channel?: unknown } };
+  const parsed = tomlParse(content) as { toolchain?: { channel?: unknown } };
   const channel = parsed.toolchain?.channel;
   if (typeof channel !== "string" || !channel) {
     throw new Error(`no channel found in ${file}, and no "toolchain" input provided`);

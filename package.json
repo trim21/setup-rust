@@ -32,8 +32,8 @@
     "eslint-plugin-unicorn": "65.0.1",
     "eslint-plugin-unused-imports": "4.4.1",
     "husky": "9.1.7",
-    "js-toml": "1.2.2",
     "prettier": "3.9.6",
+    "smol-toml": "^1.8.0",
     "typescript": "6.0.3",
     "typescript-eslint": "8.65.0"
   },
