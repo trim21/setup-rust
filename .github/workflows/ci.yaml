@@ -1,0 +1,87 @@
+name: build-test
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+concurrency:
+  cancel-in-progress: true
+  group: "${{ github.workflow }}-${{ github.ref }}"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.1.0
+      - uses: pnpm/action-setup@v6.0.9
+      - name: Setup node
+        uses: actions/setup-node@v6.5.0
+        with:
+          node-version: "24"
+          cache: pnpm
+
+      - run: pnpm i
+
+      - run: pnpm run format:check
+      - run: pnpm run lint
+      - run: pnpm run build
+
+  rust-toolchain-toml:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6.1.0
+
+      - uses: pnpm/action-setup@v6.0.9
+      - uses: actions/setup-node@v6.5.0
+        with:
+          node-version: "24"
+          cache: pnpm
+      - run: pnpm i
+      - run: pnpm run build
+
+      - uses: ./
+        id: setup
+        with:
+          working-directory: tests/sample
+          components: clippy
+
+      - name: Verify installed toolchain and extra component
+        shell: bash
+        run: |
+          rustc --version
+          cargo clippy --version
+          [[ "${{ steps.setup.outputs.toolchain }}" == "stable" ]]
+
+      - name: Build test project
+        run: cargo build
+        working-directory: tests/sample
+
+  explicit-toolchain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.1.0
+
+      - uses: pnpm/action-setup@v6.0.9
+      - uses: actions/setup-node@v6.5.0
+        with:
+          node-version: "24"
+          cache: pnpm
+      - run: pnpm i
+      - run: pnpm run build
+
+      - uses: ./
+        with:
+          toolchain: stable
+          targets: wasm32-unknown-unknown
+
+      - name: Verify extra target
+        shell: bash
+        run: rustup target list --installed | grep -q wasm32-unknown-unknown

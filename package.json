@@ -1,0 +1,41 @@
+{
+  "name": "setup-rust",
+  "version": "0.0.1",
+  "scripts": {
+    "lint": "eslint ./",
+    "format": "prettier -w .",
+    "format:check": "prettier --check .",
+    "build": "esbuild --bundle --platform=node --packages=bundle --legal-comments=external --target=node24 ./src/index.ts --outfile=dist/index.js && esbuild --bundle --platform=node --packages=bundle --legal-comments=external --target=node24 ./src/save.ts --outfile=dist/save.js",
+    "prepare": "husky"
+  },
+  "repository": "https://github.com/trim21/setup-rust.git",
+  "author": "Trim21 <trim21.me@gmail.com>",
+  "license": "MIT",
+  "prettier": {
+    "printWidth": 100,
+    "tabWidth": 2
+  },
+  "devDependencies": {
+    "@actions/cache": "6.2.0",
+    "@actions/core": "3.0.1",
+    "@actions/exec": "3.0.0",
+    "@actions/glob": "0.7.0",
+    "@actions/io": "3.0.2",
+    "@eslint/js": "10.0.1",
+    "@types/node": "24.13.3",
+    "esbuild": "0.28.2",
+    "eslint": "10.8.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-promise": "7.3.0",
+    "eslint-plugin-simple-import-sort": "14.0.0",
+    "eslint-plugin-tsdoc": "0.5.2",
+    "eslint-plugin-unicorn": "65.0.1",
+    "eslint-plugin-unused-imports": "4.4.1",
+    "husky": "9.1.7",
+    "js-toml": "1.2.2",
+    "prettier": "3.9.6",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.65.0"
+  },
+  "packageManager": "pnpm@11.18.0"
+}

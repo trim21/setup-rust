@@ -1,0 +1,40 @@
+name: Setup Rust
+author: Trim21 <trim21.me@gmail.com>
+description: Install the Rust toolchain pinned in rust-toolchain.toml, with rustup and cargo caching
+branding:
+  icon: activity
+  color: purple
+
+inputs:
+  toolchain:
+    description: >
+      Toolchain to install. Defaults to the `channel` from rust-toolchain.toml
+      in `working-directory`.
+    required: false
+    default: ""
+  components:
+    description: Comma-separated extra components to install on top of rust-toolchain.toml
+    required: false
+    default: ""
+  targets:
+    description: Comma-separated list of target triples to install for this toolchain
+    required: false
+    default: ""
+  working-directory:
+    description: Directory containing rust-toolchain.toml
+    required: false
+    default: "."
+  cache-on-failure:
+    description: Cache even when the workflow fails
+    required: false
+    default: "true"
+
+outputs:
+  toolchain:
+    description: The toolchain that was installed
+
+runs:
+  using: node24
+  main: dist/index.js
+  post: dist/save.js
+  post-if: success() || env.CACHE_ON_FAILURE == 'true'

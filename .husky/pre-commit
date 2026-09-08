@@ -1,0 +1,3 @@
+prettier -w --ignore-unknown
+git diff --exit-code
+pnpm run lint
