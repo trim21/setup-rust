@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6.1.0
-      - uses: pnpm/action-setup@v6.0.9
+      - uses: pnpm/action-setup@v6.1.0
       - name: Setup node
         uses: actions/setup-node@v6.5.0
         with:
@@ -39,7 +39,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6.1.0
 
-      - uses: pnpm/action-setup@v6.0.9
+      - uses: pnpm/action-setup@v6.1.0
       - uses: actions/setup-node@v6.5.0
         with:
           node-version: "24"
@@ -75,7 +75,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6.1.0
 
-      - uses: pnpm/action-setup@v6.0.9
+      - uses: pnpm/action-setup@v6.1.0
       - uses: actions/setup-node@v6.5.0
         with:
           node-version: "24"
@@ -101,7 +101,7 @@ jobs:
           repository: trim21/beancount-format
           path: beancount-format
 
-      - uses: pnpm/action-setup@v6.0.9
+      - uses: pnpm/action-setup@v6.1.0
       - uses: actions/setup-node@v6.5.0
         with:
           node-version: "24"

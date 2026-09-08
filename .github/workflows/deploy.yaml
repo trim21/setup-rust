@@ -14,7 +14,7 @@ jobs:
       NODE_VERSION: "24"
     steps:
       - uses: actions/checkout@v6.1.0
-      - uses: pnpm/action-setup@v6.0.9
+      - uses: pnpm/action-setup@v6.1.0
       - name: Setup node
         uses: actions/setup-node@v6.5.0
         with:
