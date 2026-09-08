@@ -5,7 +5,7 @@
     "lint": "eslint ./",
     "format": "prettier -w .",
     "format:check": "prettier --check .",
-    "build": "esbuild --bundle --platform=node --packages=bundle --legal-comments=external --target=node24 ./src/index.ts --outfile=dist/index.js && esbuild --bundle --platform=node --packages=bundle --legal-comments=external --target=node24 ./src/save.ts --outfile=dist/save.js",
+    "build": "esbuild --bundle --minify --platform=node --packages=bundle --legal-comments=none --target=node24 ./src/index.ts --outfile=dist/index.js && esbuild --bundle --minify --platform=node --packages=bundle --legal-comments=none --target=node24 ./src/save.ts --outfile=dist/save.js",
     "prepare": "husky"
   },
   "repository": "https://github.com/trim21/setup-rust.git",
