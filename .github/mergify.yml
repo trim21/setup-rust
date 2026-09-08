@@ -1,0 +1,31 @@
+merge_queue:
+  max_parallel_checks: 1
+  queued_label: "ci:queued"
+  dequeued_label: "ci:dequeued"
+
+queue_rules:
+  - name: default
+    update_method: merge
+
+pull_request_rules:
+  - name: label conflicts
+    conditions:
+      - conflict
+    actions:
+      label:
+        toggle:
+          - conflict
+
+  - name: automatic merge
+    conditions:
+      - base=main
+      - or:
+          - "#approved-reviews-by>=1"
+          - label=ci:auto-merge
+      - check-success=build
+      - check-success=rust-toolchain-toml-checks
+      - check-success=explicit-toolchain
+      - check-success=beancount-format
+    actions:
+      queue:
+        name: default

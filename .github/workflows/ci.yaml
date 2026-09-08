@@ -64,6 +64,12 @@ jobs:
         run: cargo build
         working-directory: tests/sample
 
+  rust-toolchain-toml-checks:
+    needs: [rust-toolchain-toml]
+    runs-on: ubuntu-slim
+    steps:
+      - run: echo "all rust-toolchain-toml checks passed"
+
   explicit-toolchain:
     runs-on: ubuntu-latest
     steps:
