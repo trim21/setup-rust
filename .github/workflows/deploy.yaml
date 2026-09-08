@@ -36,6 +36,7 @@ jobs:
       - name: Generate Changelog
         id: changelog
         uses: requarks/changelog-action@v1.10.3
+        continue-on-error: true
         with:
           token: ${{ github.token }}
           tag: ${{ github.ref_name }}
@@ -54,7 +55,13 @@ jobs:
           tag_name: ${{ env.TAG }}
           tag_message: "release ${{ github.ref_name }}"
 
-      - run: gh release create "${TAG}" --notes "${CHANGELOG}"
+      - name: Create release
+        run: |
+          if [ -n "${CHANGELOG}" ]; then
+            gh release create "${TAG}" --notes "${CHANGELOG}"
+          else
+            gh release create "${TAG}" --generate-notes
+          fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CHANGELOG: "${{ steps.changelog.outputs.changes }}"
