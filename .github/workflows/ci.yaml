@@ -85,3 +85,34 @@ jobs:
       - name: Verify extra target
         shell: bash
         run: rustup target list --installed | grep -q wasm32-unknown-unknown
+
+  beancount-format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.1.0
+      - uses: actions/checkout@v6.1.0
+        with:
+          repository: trim21/beancount-format
+          path: beancount-format
+
+      - uses: pnpm/action-setup@v6.0.9
+      - uses: actions/setup-node@v6.5.0
+        with:
+          node-version: "24"
+          cache: pnpm
+      - run: pnpm i
+      - run: pnpm run build
+
+      - uses: ./
+        id: setup
+        with:
+          working-directory: beancount-format
+
+      - name: Verify toolchain from beancount-format's rust-toolchain.toml
+        shell: bash
+        run: |
+          rustc --version
+          [[ "${{ steps.setup.outputs.toolchain }}" == "1.98.1" ]]
+
+      - run: cargo check --locked
+        working-directory: beancount-format
