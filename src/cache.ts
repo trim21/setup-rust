@@ -56,7 +56,8 @@ export function toolchainCacheKey(
 
 async function hashFiles(files: string[]): Promise<string> {
   const hasher = crypto.createHash("sha1");
-  for (const file of files.toSorted()) {
+  const sorted = files.toSorted((a, b) => a.localeCompare(b));
+  for (const file of sorted) {
     hasher.update(file);
     hasher.update(await fs.readFile(file));
   }
@@ -78,7 +79,8 @@ export async function cratesCacheKeys(
     { followSymbolicLinks: false },
   );
   const files: string[] = [];
-  for (const file of await globber.glob()) {
+  const matched = await globber.glob();
+  for (const file of matched) {
     const stat = await fs.stat(file);
     if (stat.isFile()) {
       files.push(file);

@@ -8,7 +8,7 @@ import unusedImports from "eslint-plugin-unused-imports";
 import pluginPromise from "eslint-plugin-promise";
 
 export default tsEslint.config(
-  { ignores: ["dist/**", "coverage/**", "**/*.test.ts"] },
+  { ignores: ["dist/**", "coverage/**", "**/*.test.ts", ".kilo/**"] },
   eslint.configs.recommended,
   pluginPromise.configs["flat/recommended"],
   ...tsEslint.configs.recommendedTypeChecked,
@@ -28,10 +28,11 @@ export default tsEslint.config(
   {
     rules: {
       "unicorn/import-style": "off",
+      "unicorn/name-replacements": "off",
       "unicorn/no-array-reduce": "off",
       "unicorn/no-null": "off",
       "unicorn/numeric-separators-style": "off",
-      "unicorn/prevent-abbreviations": "off",
+      "unicorn/prefer-await": "off",
       "unicorn/better-regex": "error",
       "unicorn/prefer-top-level-await": "off",
       "unicorn/prefer-ternary": "off",
