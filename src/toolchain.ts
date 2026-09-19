@@ -96,6 +96,30 @@ export async function installRustup(): Promise<void> {
   core.addPath(path.join(CARGO_HOME, "bin"));
 }
 
+const RETRY_BACKOFF_MS = [1000, 2000, 4000, 8000, 16000, 32000] as const;
+
+// rustup has no built-in retry, and transient DNS/HTTP failures on CI runners are common
+async function execWithBackoff(file: string, args: readonly string[]): Promise<void> {
+  for (let attempt = 0; ; attempt++) {
+    const exitCode = await exec.exec(file, [...args], { ignoreReturnCode: true });
+    if (exitCode === 0) {
+      return;
+    }
+
+    const delay = RETRY_BACKOFF_MS[attempt];
+    if (delay === undefined) {
+      throw new Error(
+        `"${file} ${args.join(" ")}" failed with exit code ${exitCode} after ${RETRY_BACKOFF_MS.length + 1} attempts`,
+      );
+    }
+
+    core.warning(
+      `"${file} ${args.join(" ")}" failed with exit code ${exitCode}, retrying in ${delay}ms (attempt ${attempt + 1}/${RETRY_BACKOFF_MS.length})`,
+    );
+    await new Promise((resolve) => setTimeout(resolve, delay));
+  }
+}
+
 export async function installToolchain(inputs: ToolchainInputs): Promise<void> {
   const args = [
     "toolchain",
@@ -111,7 +135,7 @@ export async function installToolchain(inputs: ToolchainInputs): Promise<void> {
   for (const target of inputs.targets) {
     args.push("--target", target);
   }
-  await exec.exec("rustup", args);
+  await execWithBackoff("rustup", args);
 
   await exec.exec("rustup", ["default", inputs.toolchain]);
 }
