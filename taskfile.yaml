@@ -1,0 +1,11 @@
+version: 3
+
+tasks:
+  bump:
+    vars:
+      VERSION:
+        sh: jq -r '.version' package.json
+    cmds:
+      - cmd: git add package.json
+      - cmd: 'git commit -m "bump: v{{ .VERSION }}"'
+      - cmd: git tag "src/v{{ .VERSION }}" -a -m "v{{ .VERSION }}"
