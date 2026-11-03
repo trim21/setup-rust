@@ -6,8 +6,5 @@
     "github>trim21/renovate-config:monthly"
   ],
   "prConcurrentLimit": 3,
-  "labels": [
-    "ci:auto-merge",
-    "dependencies"
-  ]
+  "labels": ["ci:auto-merge", "dependencies"]
 }
