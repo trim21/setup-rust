@@ -6,5 +6,12 @@
     "github>trim21/renovate-config:monthly"
   ],
   "prConcurrentLimit": 3,
-  "labels": ["ci:auto-merge", "dependencies"]
+  "labels": ["ci:auto-merge", "dependencies"],
+  "packageRules": [
+    {
+      "description": "action.yml runs on node24, keep @types/node aligned with that runtime",
+      "matchPackageNames": ["@types/node"],
+      "allowedVersions": "<25"
+    }
+  ]
 }

@@ -24,7 +24,7 @@ export default tsEslint.config(
       },
     },
   },
-  eslintPluginUnicorn.configs["flat/recommended"],
+  eslintPluginUnicorn.configs.recommended,
   {
     rules: {
       "unicorn/import-style": "off",
