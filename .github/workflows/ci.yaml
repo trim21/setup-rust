@@ -131,8 +131,10 @@ jobs:
       - name: Verify toolchain from beancount-format's rust-toolchain.toml
         shell: bash
         run: |
+          expected=$(node -e "process.stdout.write(require('smol-toml').parse(require('node:fs').readFileSync('beancount-format/rust-toolchain.toml', 'utf8')).toolchain.channel)")
+          test -n "$expected"
           rustc --version
-          [[ "${{ steps.setup.outputs.toolchain }}" == "1.98.1" ]]
+          [[ "${{ steps.setup.outputs.toolchain }}" == "$expected" ]]
 
       - run: cargo check --locked
         working-directory: beancount-format
