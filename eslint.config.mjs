@@ -1,4 +1,5 @@
 import eslint from "@eslint/js";
+import { defineConfig } from "eslint/config";
 import tsEslint from "typescript-eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
 import eslintPluginUnicorn from "eslint-plugin-unicorn";
@@ -7,7 +8,7 @@ import simpleImportSort from "eslint-plugin-simple-import-sort";
 import unusedImports from "eslint-plugin-unused-imports";
 import pluginPromise from "eslint-plugin-promise";
 
-export default tsEslint.config(
+export default defineConfig(
   { ignores: ["dist/**", "coverage/**", "**/*.test.ts", ".kilo/**"] },
   eslint.configs.recommended,
   pluginPromise.configs["flat/recommended"],
