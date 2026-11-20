@@ -51,7 +51,7 @@ export function toolchainCacheKey(
     .update(JSON.stringify([components, targets]))
     .digest("hex")
     .slice(0, 8);
-  return `setup-rust-rustup-${runnerKey()}-${toolchain}-${salt}`;
+  return `setup-rust-rustup-v2-${runnerKey()}-${toolchain}-${salt}`;
 }
 
 async function hashFiles(files: string[]): Promise<string> {
