@@ -22,10 +22,12 @@ pull_request_rules:
       - or:
           - "#approved-reviews-by>=1"
           - label=ci:auto-merge
+          - author=dependabot[bot]
       - not:
           and:
             - "head*=renovate/lockfile-maintenance-*"
             - "created-at>24h ago"
+      - check-success=lint
       - check-success=build
       - check-success=rust-toolchain-toml-checks
       - check-success=explicit-toolchain
