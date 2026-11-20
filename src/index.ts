@@ -1,4 +1,5 @@
 import * as core from "@actions/core";
+import fs from "node:fs/promises";
 import path from "node:path";
 import {
   CARGO_HOME,
@@ -18,10 +19,15 @@ async function run(): Promise<void> {
 
   const toolchain = await resolveToolchain(inputs.workingDirectory, inputs.toolchain);
 
+  // a cache restore merges into the runner image's preinstalled toolchains instead of replacing
+  // them, and rustup refuses to overwrite files left over from a different version
+  const toolchainsDir = path.join(RUSTUP_HOME, "toolchains");
+  await fs.rm(toolchainsDir, { recursive: true, force: true });
+
   // restore before installing so that `rustup toolchain install` becomes a fast no-op on cache hit
   const toolchainCache = await restore(
     "rustup",
-    [path.join(RUSTUP_HOME, "toolchains"), path.join(RUSTUP_HOME, "settings.toml")],
+    [toolchainsDir, path.join(RUSTUP_HOME, "settings.toml")],
     toolchainCacheKey(toolchain, inputs.components, inputs.targets),
   );
 
